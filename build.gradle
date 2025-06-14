@@ -8,9 +8,7 @@ plugins {
 subprojects {
     apply plugin: 'java'
     apply plugin: 'com.diffplug.spotless'
-    apply plugin: 'org.springframework.boot'
-    apply plugin: 'io.spring.dependency-management'
-    
+
     repositories {
         mavenCentral()
     }
