@@ -25,3 +25,7 @@ dependencyManagement {
         mavenBom "org.springframework.cloud:spring-cloud-dependencies:2022.0.3"
     }
 }
+
+springBoot {
+    mainClass = 'org.gndwrk.order.OrderApplication'
+}
