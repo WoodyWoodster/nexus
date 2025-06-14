@@ -1,2 +1,2 @@
-rootProject.name = 'erp'
+rootProject.name = 'nexus'
 include 'eureka-server', 'gateway', 'services:user-service', 'services:order-service'
