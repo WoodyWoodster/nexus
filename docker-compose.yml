@@ -41,12 +41,16 @@ services:
     container_name: user-mongo
     ports:
       - "27017:27017"
+    volumes:
+      - user-mongo-data:/data/db
 
   order-mongo:
     image: mongo:6.0
     container_name: order-mongo
     ports:
       - "27018:27017"
+    volumes:
+      - order-mongo-data:/data/db
 
   user-service:
     container_name: user-service
@@ -98,3 +102,7 @@ services:
         condition: service_started
       user-mongo:
         condition: service_started
+
+volumes:
+  user-mongo-data:
+  order-mongo-data:
