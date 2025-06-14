@@ -10,24 +10,25 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/orders")
 public class OrderController {
 
-    private final CreateOrderUseCase createOrderUseCase;
-    private final GetOrderUseCase getOrderUseCase;
+  private final CreateOrderUseCase createOrderUseCase;
+  private final GetOrderUseCase getOrderUseCase;
 
-    public OrderController(CreateOrderUseCase createOrderUseCase, GetOrderUseCase getOrderUseCase) {
-        this.createOrderUseCase = createOrderUseCase;
-        this.getOrderUseCase = getOrderUseCase;
-    }
+  public OrderController(CreateOrderUseCase createOrderUseCase, GetOrderUseCase getOrderUseCase) {
+    this.createOrderUseCase = createOrderUseCase;
+    this.getOrderUseCase = getOrderUseCase;
+  }
 
-    @PostMapping
-    public ResponseEntity<Order> createOrder(@RequestBody Order order) {
-        Order created = createOrderUseCase.createOrder(order);
-        return ResponseEntity.ok(created);
-    }
+  @PostMapping
+  public ResponseEntity<Order> createOrder(@RequestBody Order order) {
+    Order created = createOrderUseCase.createOrder(order);
+    return ResponseEntity.ok(created);
+  }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Order> getOrder(@PathVariable String id) {
-        return getOrderUseCase.getOrder(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
+  @GetMapping("/{id}")
+  public ResponseEntity<Order> getOrder(@PathVariable String id) {
+    return getOrderUseCase
+        .getOrder(id)
+        .map(ResponseEntity::ok)
+        .orElse(ResponseEntity.notFound().build());
+  }
 }

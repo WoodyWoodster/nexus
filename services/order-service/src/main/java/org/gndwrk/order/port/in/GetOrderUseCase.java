@@ -1,9 +1,8 @@
 package org.gndwrk.order.port.in;
 
+import java.util.Optional;
 import org.gndwrk.order.domain.model.Order;
 
-import java.util.Optional;
-
 public interface GetOrderUseCase {
-    Optional<Order> getOrder(String id);
+  Optional<Order> getOrder(String id);
 }
