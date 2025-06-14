@@ -37,7 +37,7 @@ services:
       start_period: 40s
 
   user-mongo:
-    image: mongo:6.0
+    image: mongo:latest
     container_name: user-mongo
     ports:
       - "27017:27017"
@@ -45,7 +45,7 @@ services:
       - user-mongo-data:/data/db
 
   order-mongo:
-    image: mongo:6.0
+    image: mongo:latest
     container_name: order-mongo
     ports:
       - "27018:27017"

@@ -29,7 +29,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class OrderServiceIntegrationTest {
 
     @Container
-    static MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:6.0");
+    static MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:latest");
 
     @Autowired
     private CreateOrderUseCase createOrderUseCase;
