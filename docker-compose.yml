@@ -1,5 +1,6 @@
 services:
   zookeeper:
+    container_name: zookeeper
     image: confluentinc/cp-zookeeper:7.4.0
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
@@ -7,6 +8,7 @@ services:
       - "2181:2181"
 
   kafka:
+    container_name: kafka
     image: confluentinc/cp-kafka:7.4.0
     depends_on:
       - zookeeper
@@ -47,6 +49,7 @@ services:
       - "27018:27017"
 
   user-service:
+    container_name: user-service
     build: ./services/user-service
     ports:
       - "8081:8081"
@@ -62,6 +65,7 @@ services:
         condition: service_started
 
   order-service:
+    container_name: order-service
     build:
       context: ./services/order-service
       dockerfile: Dockerfile
@@ -73,12 +77,13 @@ services:
     depends_on:
       eureka-server:
         condition: service_healthy
-      user-mongo:
+      order-mongo:
         condition: service_started
       kafka:
         condition: service_started
 
   api-gateway:
+    container_name: api-gateway
     build:
       context: ./gateway
       dockerfile: Dockerfile
@@ -89,7 +94,7 @@ services:
     depends_on:
       eureka-server:
         condition: service_healthy
-      user-mongo:
+      order-service:
         condition: service_started
-      kafka:
+      user-mongo:
         condition: service_started
