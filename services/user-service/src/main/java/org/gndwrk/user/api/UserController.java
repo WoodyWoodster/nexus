@@ -12,19 +12,19 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/users")
 public class UserController {
 
-    private final CreateUserUseCase createUserUseCase;
+  private final CreateUserUseCase createUserUseCase;
 
-    public UserController(CreateUserUseCase createUserUseCase) {
-        this.createUserUseCase = createUserUseCase;
-    }
+  public UserController(CreateUserUseCase createUserUseCase) {
+    this.createUserUseCase = createUserUseCase;
+  }
 
-    @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        User created = createUserUseCase.createUser(user);
-        return ResponseEntity.ok(created);
-    }
+  @PostMapping
+  public ResponseEntity<User> createUser(@RequestBody User user) {
+    User created = createUserUseCase.createUser(user);
+    return ResponseEntity.ok(created);
+  }
 
-//    @GetMapping("/{id}")
-//    public ResponseEntity<User> getUser(@PathVariable String id) {
-//    }
+  //    @GetMapping("/{id}")
+  //    public ResponseEntity<User> getUser(@PathVariable String id) {
+  //    }
 }

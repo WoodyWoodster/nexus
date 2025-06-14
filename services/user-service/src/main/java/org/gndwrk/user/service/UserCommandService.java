@@ -8,14 +8,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserCommandService implements CreateUserUseCase {
 
-    private final UserRepositoryPort userRepositoryPort;
+  private final UserRepositoryPort userRepositoryPort;
 
-    public UserCommandService(UserRepositoryPort userRepositoryPort) {
-        this.userRepositoryPort = userRepositoryPort;
-    }
+  public UserCommandService(UserRepositoryPort userRepositoryPort) {
+    this.userRepositoryPort = userRepositoryPort;
+  }
 
-    @Override
-    public User createUser(User user) {
-        return userRepositoryPort.save(user);
-    }
+  @Override
+  public User createUser(User user) {
+    return userRepositoryPort.save(user);
+  }
 }
