@@ -22,3 +22,14 @@ docker-up:
 # Stop docker containers
 docker-down:
 	docker compose down
+
+# Run all tests
+test:
+	./gradlew test
+
+# Run tests for specific service
+test-order-service:
+	./gradlew :services:order-service:test
+
+test-user-service:
+	./gradlew :services:user-service:test
