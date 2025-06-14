@@ -24,7 +24,7 @@ services:
   eureka-server:
     container_name: eureka-server
     build:
-      context: ./gateway
+      context: ./eureka-server
       dockerfile: Dockerfile
     ports:
       - "8761:8761"
@@ -70,7 +70,9 @@ services:
       - kafka
 
   api-gateway:
-    build: ./gateway
+    build:
+      context: ./gateway
+      dockerfile: Dockerfile
     ports:
       - "8080:8080"
     depends_on:
