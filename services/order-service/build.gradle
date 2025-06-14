@@ -6,7 +6,6 @@ plugins {
 
 group = 'org.gndwrk'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '21'
 
 repositories {
     mavenCentral()
