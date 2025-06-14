@@ -1,17 +1,16 @@
 package org.gndwrk.order.api;
 
+import lombok.extern.slf4j.Slf4j;
 import org.gndwrk.order.domain.model.Order;
 import org.gndwrk.order.port.in.CreateOrderUseCase;
 import org.gndwrk.order.port.in.GetOrderUseCase;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
 @RequestMapping("/orders")
 public class OrderController {
-  private static final Logger log = LoggerFactory.getLogger(OrderController.class);
 
   private final CreateOrderUseCase createOrderUseCase;
   private final GetOrderUseCase getOrderUseCase;
