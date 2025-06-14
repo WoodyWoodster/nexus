@@ -27,6 +27,12 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8761:8761"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8761/actuator/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
 
   user-mongo:
     image: mongo:6.0
@@ -48,9 +54,12 @@ services:
       - SPRING_DATA_MONGODB_URI=mongodb://user-mongo:27017/usersdb
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
     depends_on:
-      - eureka-server
-      - user-mongo
-      - kafka
+      eureka-server:
+        condition: service_healthy
+      user-mongo:
+        condition: service_started
+      kafka:
+        condition: service_started
 
   order-service:
     build:
@@ -62,9 +71,12 @@ services:
       - SPRING_DATA_MONGODB_URI=mongodb://order-mongo:27017/ordersdb
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
     depends_on:
-      - eureka-server
-      - order-mongo
-      - kafka
+      eureka-server:
+        condition: service_healthy
+      user-mongo:
+        condition: service_started
+      kafka:
+        condition: service_started
 
   api-gateway:
     build:
@@ -75,6 +87,9 @@ services:
     environment:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
     depends_on:
-      - eureka-server
-      - user-service
-      - order-service
+      eureka-server:
+        condition: service_healthy
+      user-mongo:
+        condition: service_started
+      kafka:
+        condition: service_started
