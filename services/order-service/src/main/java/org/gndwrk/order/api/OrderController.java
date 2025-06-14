@@ -23,7 +23,9 @@ public class OrderController {
 
   @PostMapping
   public ResponseEntity<Order> createOrder(@RequestBody Order order) {
+    log.debug("Creating order: {}", order);
     Order created = createOrderUseCase.createOrder(order);
+    log.debug("Created order: {}", created);
     return ResponseEntity.ok(created);
   }
 
