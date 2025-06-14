@@ -1,6 +1,7 @@
 package org.gndwrk.order.api;
 
 import lombok.extern.slf4j.Slf4j;
+import org.gndwrk.order.domain.exception.OrderValidationException;
 import org.gndwrk.order.domain.model.Order;
 import org.gndwrk.order.port.in.CreateOrderUseCase;
 import org.gndwrk.order.port.in.GetOrderUseCase;
@@ -22,10 +23,15 @@ public class OrderController {
 
   @PostMapping
   public ResponseEntity<Order> createOrder(@RequestBody Order order) {
-    log.debug("Creating order: {}", order);
-    Order created = createOrderUseCase.createOrder(order);
-    log.debug("Created order: {}", created);
-    return ResponseEntity.ok(created);
+    try {
+      log.info("Creating order: {}", order);
+      Order created = createOrderUseCase.createOrder(order);
+      log.info("Created order: {}", created);
+      return ResponseEntity.ok(created);
+    } catch (OrderValidationException e) {
+      log.error("Order validation failed: {}", e.getMessage());
+      return ResponseEntity.badRequest().body(null);
+    }
   }
 
   @GetMapping("/{id}")

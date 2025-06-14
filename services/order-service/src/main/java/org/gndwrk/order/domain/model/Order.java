@@ -1,5 +1,8 @@
 package org.gndwrk.order.domain.model;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,7 +18,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "orders")
 public class Order {
   @Id private String id;
+
+  @NotBlank(message = "User ID cannot be blank")
   private String userId;
+
+  @NotEmpty(message = "Order must contain at least 1 item")
+  @Valid
   private List<OrderItem> items;
-  private int quantity;
 }
