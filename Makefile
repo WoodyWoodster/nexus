@@ -23,9 +23,11 @@ docker-up:
 docker-down:
 	docker compose down
 
+integration-test:
+	./gradlew integrationTest
+
 # Run all tests
-test:
-	./gradlew test
+test: unit-test integration-test
 
 # Run tests for specific service
 test-order-service:
@@ -33,6 +35,10 @@ test-order-service:
 
 test-user-service:
 	./gradlew :services:user-service:test
+
+# Run unit tests for all services
+unit-test:
+	./gradlew test
 
 # Show help
 help:
@@ -44,9 +50,11 @@ help:
 	@echo "make build            	- Build the entire application"
 	@echo "make docker-up        	- Start all services using Docker Compose"
 	@echo "make docker-down      	- Stop all Docker containers"
+	@echo "make integration-test 	- Run integration tests for the application"
 	@echo "make test             	- Run all tests across all services"
 	@echo "make test-order-service - Run tests for the order service only"
 	@echo "make test-user-service  - Run tests for the user service only"
+	@echo "make unit-test        	- Run unit tests for all services"
 	@echo ""
 	@echo "Example usage:"
 	@echo "  make               	- Full build and start"
