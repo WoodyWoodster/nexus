@@ -36,7 +36,7 @@ test {
     systemProperty 'spring.profiles.active', 'test'
     testLogging {
         events "passed", "skipped", "failed"
-        showStandardStreams = true
+        showStandardStreams = false
     }
 }
 
@@ -47,7 +47,7 @@ tasks.register('integrationTest', Test) {
     systemProperty 'spring.profiles.active', 'test'
     testLogging {
         events "passed", "skipped", "failed"
-        showStandardStreams = true
+        showStandardStreams = false
     }
 }
 

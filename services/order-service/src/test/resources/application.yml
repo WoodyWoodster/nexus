@@ -15,5 +15,5 @@ spring:
 
 logging:
     level:
-        org.testcontainers: DEBUG
-        org.springframework.test: DEBUG
+        org.testcontainers: WARN
+        org.springframework.test: WARN
