@@ -4,16 +4,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 import java.util.Optional;
+import org.gndwrk.order.annotation.IntegrationTest;
 import org.gndwrk.order.domain.model.Order;
 import org.gndwrk.order.domain.model.OrderItem;
 import org.gndwrk.order.service.OrderService;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -23,10 +21,11 @@ import org.testcontainers.containers.KafkaContainer;
 import org.testcontainers.containers.MongoDBContainer;
 import org.testcontainers.containers.Network;
 import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
-@SpringBootTest(
-    properties = {"eureka.client.enabled=false", "spring.cloud.discovery.enabled=false"})
+@Testcontainers
+@IntegrationTest
 @ContextConfiguration(initializers = OrderServiceIntegrationTest.Initializer.class)
 class OrderServiceIntegrationTest {
 
@@ -41,18 +40,6 @@ class OrderServiceIntegrationTest {
       new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:7.4.0"))
           .withNetwork(network)
           .withNetworkAliases("kafka");
-
-  @BeforeAll
-  static void beforeAll() {
-    mongoDBContainer.start();
-    kafkaContainer.start();
-  }
-
-  @AfterAll
-  static void afterAll() {
-    mongoDBContainer.stop();
-    kafkaContainer.stop();
-  }
 
   static class Initializer
       implements ApplicationContextInitializer<ConfigurableApplicationContext> {
