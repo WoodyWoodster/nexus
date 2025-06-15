@@ -30,7 +30,20 @@ dependencies {
 }
 
 test {
-    useJUnitPlatform()
+    useJUnitPlatform {
+        excludeTags 'integration'
+    }
+    systemProperty 'spring.profiles.active', 'test'
+    testLogging {
+        events "passed", "skipped", "failed"
+        showStandardStreams = true
+    }
+}
+
+tasks.register('integrationTest', Test) {
+    useJUnitPlatform {
+        includeTags 'integration'
+    }
     systemProperty 'spring.profiles.active', 'test'
     testLogging {
         events "passed", "skipped", "failed"
