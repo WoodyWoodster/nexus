@@ -1,0 +1,19 @@
+kafka:
+    topics:
+        order-created: order-created
+spring:
+    kafka:
+        producer:
+            value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+        consumer:
+            value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+            properties:
+                spring.json.trusted.packages: "*"
+    data:
+        mongodb:
+            database: test
+
+logging:
+    level:
+        org.testcontainers: DEBUG
+        org.springframework.test: DEBUG
