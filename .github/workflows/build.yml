@@ -28,9 +28,7 @@ jobs:
 
       - name: Build project
         run: | 
-          make clean
-          find . -type f -name "*.java" | sort
-          make build
+          make build --debug
 
       - name: Run tests
         run: make test
