@@ -12,7 +12,6 @@ gradle-app.setting
 *.iws
 *.iml
 *.ipr
-out/
 .idea_modules/
 
 ### Eclipse ###
