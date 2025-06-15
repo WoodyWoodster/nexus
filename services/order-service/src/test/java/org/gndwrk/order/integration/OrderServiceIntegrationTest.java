@@ -8,35 +8,71 @@ import org.gndwrk.order.domain.model.Order;
 import org.gndwrk.order.domain.model.OrderItem;
 import org.gndwrk.order.port.in.CreateOrderUseCase;
 import org.gndwrk.order.port.in.GetOrderUseCase;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.util.TestPropertyValues;
+import org.springframework.context.ApplicationContextInitializer;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.context.ContextConfiguration;
+import org.testcontainers.containers.KafkaContainer;
 import org.testcontainers.containers.MongoDBContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.containers.Network;
+import org.testcontainers.utility.DockerImageName;
 
 @SpringBootTest(
     properties = {"eureka.client.enabled=false", "spring.cloud.discovery.enabled=false"})
-@Testcontainers
+@ContextConfiguration(initializers = OrderServiceIntegrationTest.Initializer.class)
 class OrderServiceIntegrationTest {
 
-  @Container static MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:latest");
+  static final Network network = Network.newNetwork();
+
+  static final MongoDBContainer mongoDBContainer =
+      new MongoDBContainer("mongo:latest").withNetwork(network).withNetworkAliases("mongodb");
+
+  static final KafkaContainer kafkaContainer =
+      new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:7.4.0"))
+          .withNetwork(network)
+          .withNetworkAliases("kafka");
+
+  @BeforeAll
+  static void beforeAll() {
+    mongoDBContainer.start();
+    kafkaContainer.start();
+  }
+
+  @AfterAll
+  static void afterAll() {
+    mongoDBContainer.stop();
+    kafkaContainer.stop();
+  }
+
+  static class Initializer
+      implements ApplicationContextInitializer<ConfigurableApplicationContext> {
+    public void initialize(ConfigurableApplicationContext configurableApplicationContext) {
+      TestPropertyValues.of(
+              "spring.data.mongodb.uri=" + mongoDBContainer.getReplicaSetUrl(),
+              "spring.data.mongodb.database=test",
+              "spring.kafka.bootstrap-servers=" + kafkaContainer.getBootstrapServers(),
+              "spring.kafka.producer.bootstrap-servers=" + kafkaContainer.getBootstrapServers(),
+              "spring.kafka.consumer.bootstrap-servers=" + kafkaContainer.getBootstrapServers(),
+              "spring.kafka.topics.order-created=test-order-created",
+              "spring.kafka.producer.key-serializer=org.apache.kafka.common.serialization.StringSerializer",
+              "spring.kafka.producer.value-serializer=org.springframework.kafka.support.serializer.JsonSerializer")
+          .applyTo(configurableApplicationContext.getEnvironment());
+    }
+  }
 
   @Autowired private CreateOrderUseCase createOrderUseCase;
 
   @Autowired private GetOrderUseCase getOrderUseCase;
 
   @Autowired private MongoTemplate mongoTemplate;
-
-  @DynamicPropertySource
-  static void setProperties(DynamicPropertyRegistry registry) {
-    registry.add("spring.data.mongodb.uri", mongoDBContainer::getReplicaSetUrl);
-  }
 
   @BeforeEach
   void cleanup() {
