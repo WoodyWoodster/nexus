@@ -27,10 +27,10 @@ jobs:
           cache: gradle
 
       - name: Build project
-        run: ./gradlew build --no-daemon
+        run: make build
 
       - name: Run tests
-        run: ./gradlew test --no-daemon
+        run: make test
 
       - name: Upload test results
         if: always()
