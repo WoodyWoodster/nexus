@@ -23,6 +23,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.containers.KafkaContainer;
 import org.testcontainers.containers.MongoDBContainer;
 import org.testcontainers.containers.Network;
+import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.utility.DockerImageName;
 
 @SpringBootTest(
@@ -32,9 +33,11 @@ class OrderServiceIntegrationTest {
 
   static final Network network = Network.newNetwork();
 
+  @Container
   static final MongoDBContainer mongoDBContainer =
       new MongoDBContainer("mongo:latest").withNetwork(network).withNetworkAliases("mongodb");
 
+  @Container
   static final KafkaContainer kafkaContainer =
       new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:7.4.0"))
           .withNetwork(network)
