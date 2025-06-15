@@ -6,8 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import org.gndwrk.order.domain.model.Order;
 import org.gndwrk.order.domain.model.OrderItem;
-import org.gndwrk.order.port.in.CreateOrderUseCase;
-import org.gndwrk.order.port.in.GetOrderUseCase;
+import org.gndwrk.order.service.OrderService;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -71,9 +70,7 @@ class OrderServiceIntegrationTest {
     }
   }
 
-  @Autowired private CreateOrderUseCase createOrderUseCase;
-
-  @Autowired private GetOrderUseCase getOrderUseCase;
+  @Autowired private OrderService orderService;
 
   @Autowired private MongoTemplate mongoTemplate;
 
@@ -88,8 +85,8 @@ class OrderServiceIntegrationTest {
     OrderItem item = new OrderItem("product1", 2, 29.99);
     Order order = new Order(null, "user123", List.of(item));
 
-    Order createdOrder = createOrderUseCase.createOrder(order);
-    Optional<Order> retrievedOrder = getOrderUseCase.getOrder(createdOrder.getId());
+    Order createdOrder = orderService.createOrder(order);
+    Optional<Order> retrievedOrder = orderService.getOrder(createdOrder.getId());
 
     assertThat(retrievedOrder)
         .isPresent()
@@ -112,7 +109,7 @@ class OrderServiceIntegrationTest {
   @Test
   @DisplayName("should return empty when retrieving non-existent order")
   void shouldReturnEmptyForNonExistentOrder() {
-    Optional<Order> result = getOrderUseCase.getOrder("non-existent-id");
+    Optional<Order> result = orderService.getOrder("non-existent-id");
 
     assertThat(result).isEmpty();
   }
@@ -125,15 +122,15 @@ class OrderServiceIntegrationTest {
     Order order1 = new Order(null, "user123", List.of(item1));
     Order order2 = new Order(null, "user123", List.of(item2));
 
-    Order createdOrder1 = createOrderUseCase.createOrder(order1);
-    Order createdOrder2 = createOrderUseCase.createOrder(order2);
+    Order createdOrder1 = orderService.createOrder(order1);
+    Order createdOrder2 = orderService.createOrder(order2);
 
     assertThat(createdOrder1.getId()).isNotNull();
     assertThat(createdOrder2.getId()).isNotNull();
     assertThat(createdOrder1.getId()).isNotEqualTo(createdOrder2.getId());
 
-    Optional<Order> retrievedOrder1 = getOrderUseCase.getOrder(createdOrder1.getId());
-    Optional<Order> retrievedOrder2 = getOrderUseCase.getOrder(createdOrder2.getId());
+    Optional<Order> retrievedOrder1 = orderService.getOrder(createdOrder1.getId());
+    Optional<Order> retrievedOrder2 = orderService.getOrder(createdOrder2.getId());
 
     assertThat(retrievedOrder1).isPresent();
     assertThat(retrievedOrder2).isPresent();
