@@ -17,13 +17,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
-public class OrderCommandService implements CreateOrderUseCase, GetOrderUseCase {
+public class OrderService implements CreateOrderUseCase, GetOrderUseCase {
 
   private final OrderRepositoryPort orderRepositoryPort;
   private final OrderEventProducerPort orderEventProducer;
   private final Validator validator;
 
-  public OrderCommandService(
+  public OrderService(
       OrderRepositoryPort orderRepositoryPort,
       OrderEventProducerPort orderEventProducer,
       Validator validator) {
