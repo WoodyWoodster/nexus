@@ -27,7 +27,9 @@ jobs:
           cache: gradle
 
       - name: Build project
-        run: make build
+        run: | 
+          make clean
+          make build
 
       - name: Run tests
         run: make test
