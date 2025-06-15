@@ -24,9 +24,7 @@ public class OrderController {
   @PostMapping
   public ResponseEntity<Order> createOrder(@RequestBody Order order) {
     try {
-      log.info("Creating order: {}", order);
       Order created = createOrderUseCase.createOrder(order);
-      log.info("Created order: {}", created);
       return ResponseEntity.ok(created);
     } catch (OrderValidationException e) {
       log.error("Order validation failed: {}", e.getMessage());
