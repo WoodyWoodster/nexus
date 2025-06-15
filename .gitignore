@@ -3,7 +3,6 @@
 **/build/
 !src/**/build/
 gradle-app.setting
-!gradle-wrapper.jar
 .gradletasknamecache
 .project
 .classpath
@@ -105,3 +104,6 @@ coverage/
 # Project specific temp files
 temp/
 tmp/
+
+# Allow gradle-wrapper.jar
+!gradle-wrapper.jar
