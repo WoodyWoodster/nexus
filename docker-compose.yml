@@ -112,7 +112,7 @@ services:
         condition: service_healthy
       order-service:
         condition: service_started
-      user-mongo:
+      user-service:
         condition: service_started
     networks:
       - app-net
